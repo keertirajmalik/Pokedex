@@ -64,6 +64,7 @@
 		332AB80C28F5973900E0FD32 /* Pokedex */ = {
 			isa = PBXGroup;
 			children = (
+				336F750128FDBCEC0072B85D /* view */,
 				33124F7828FC3CCE0091672E /* Extension */,
 				332AB80D28F5973900E0FD32 /* AppDelegate.swift */,
 				332AB80F28F5973900E0FD32 /* SceneDelegate.swift */,
@@ -73,6 +74,13 @@
 				332AB81B28F5973A00E0FD32 /* Info.plist */,
 			);
 			path = Pokedex;
+			sourceTree = "<group>";
+		};
+		336F750128FDBCEC0072B85D /* view */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = view;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
