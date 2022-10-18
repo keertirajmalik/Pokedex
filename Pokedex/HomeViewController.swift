@@ -10,18 +10,78 @@ import UIKit
 class HomeViewController: UIViewController {
     private var headerLabel: UILabel!
     private var searchTextField: UITextField!
-    private var itemButtonView: UIView!
+    private var pokedexButtonView: UIView!
+    private var movesButtonView: UIView!
+    private var abilitiesButtonView: UIView!
+    private var itemsButtonView: UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 
-    private func backgroundPokeballImageView() {
-        let backgroundPokeballImage = UIImageView(frame: CGRect(x: UIScreen.main.bounds.width - 150, y: -75, width: 250, height: 250))
-        backgroundPokeballImage.image = UIImage(named: "pokeball.png")
+    override func loadView() {
+        view = UIView()
+        view.backgroundColor = .systemGray5
+
+        backgroundCardViewSetup()
+        backgroundPokeballImageView(uiView: view, frame: CGRect(x: UIScreen.main.bounds.width - 150, y: -75, width: 250, height: 250), tintColor: .gray)
+        headerLabelView()
+        searchTextFieldView()
+        pokedexButtonViewSetup()
+        movesButtonViewSetup()
+        abilitiesButtonViewSetup()
+        movesButtonViewSetup()
+        itemsButtonViewSetup()
+
+        NSLayoutConstraint.activate([
+            headerLabel.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 75),
+            headerLabel.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            headerLabel.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+
+            searchTextField.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 20),
+            searchTextField.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            searchTextField.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            searchTextField.heightAnchor.constraint(equalToConstant: 52),
+
+            pokedexButtonView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 20),
+            pokedexButtonView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            pokedexButtonView.heightAnchor.constraint(equalToConstant: 52),
+            pokedexButtonView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width / 2) - 20),
+
+            movesButtonView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 20),
+            movesButtonView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            movesButtonView.heightAnchor.constraint(equalToConstant: 52),
+            movesButtonView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width / 2) - 20),
+
+            abilitiesButtonView.topAnchor.constraint(equalTo: pokedexButtonView.bottomAnchor, constant: 20),
+            abilitiesButtonView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            abilitiesButtonView.heightAnchor.constraint(equalToConstant: 52),
+            abilitiesButtonView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width / 2) - 20),
+
+            itemsButtonView.topAnchor.constraint(equalTo: movesButtonView.bottomAnchor, constant: 20),
+            itemsButtonView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            itemsButtonView.heightAnchor.constraint(equalToConstant: 52),
+            itemsButtonView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width / 2) - 20),
+        ])
+    }
+
+    private func backgroundCardViewSetup() {
+        let backgroundCardView = UIView()
+        backgroundCardView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundCardView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: (UIScreen.main.bounds.height / 2) + 25)
+        backgroundCardView.backgroundColor = .white
+        backgroundCardView.layer.cornerRadius = 25
+        backgroundCardView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        view.insertSubview(backgroundCardView, at: 0)
+    }
+
+    private func backgroundPokeballImageView(uiView: UIView, frame: CGRect, tintColor: UIColor) {
+        let backgroundPokeballImage = UIImageView(frame: frame)
+        backgroundPokeballImage.image = UIImage(named: "pokeball.png")?.withTintColor(tintColor)
+
         backgroundPokeballImage.alpha = 0.15
         backgroundPokeballImage.contentMode = .scaleAspectFit
-        view.insertSubview(backgroundPokeballImage, at: 0)
+        uiView.insertSubview(backgroundPokeballImage, at: 1)
     }
 
     private func headerLabelView() {
@@ -54,49 +114,67 @@ class HomeViewController: UIViewController {
         view.addSubview(searchTextField)
     }
 
-    private func itemButtonViewSetup() {
-        itemButtonView = UIView()
-        itemButtonView.translatesAutoresizingMaskIntoConstraints = false
-        itemButtonView.backgroundColor = .systemTeal
-        itemButtonView.layer.cornerRadius = 10
+    private func pokedexButtonViewSetup() {
+        pokedexButtonView = UIView()
+        pokedexButtonView.translatesAutoresizingMaskIntoConstraints = false
+        pokedexButtonView.backgroundColor = .systemTeal
+        pokedexButtonView.layer.cornerRadius = 10
 
         let itemButton = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 52))
         itemButton.setTitle("Pokedex", for: .normal)
         itemButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        itemButtonView.addSubview(itemButton)
+        pokedexButtonView.addSubview(itemButton)
 
-        let backgroundPokeballImage = UIImageView(frame: CGRect(x: (UIScreen.main.bounds.width / 4) + 35, y: 5, width: 52, height: 52))
-        backgroundPokeballImage.image = UIImage(named: "pokeball.png")?.withTintColor(.white)
-        backgroundPokeballImage.alpha = 0.30
-        backgroundPokeballImage.contentMode = .scaleAspectFit
-        itemButtonView.insertSubview(backgroundPokeballImage, at: 0)
+        backgroundPokeballImageView(uiView: itemButton, frame: CGRect(x: (UIScreen.main.bounds.width / 4) + 35, y: 5, width: 52, height: 52), tintColor: .white)
 
-        view.addSubview(itemButtonView)
+        view.addSubview(pokedexButtonView)
     }
 
-    override func loadView() {
-        view = UIView()
-        view.backgroundColor = .white
+    private func movesButtonViewSetup() {
+        movesButtonView = UIView()
+        movesButtonView.translatesAutoresizingMaskIntoConstraints = false
+        movesButtonView.backgroundColor = .systemRed
+        movesButtonView.layer.cornerRadius = 10
 
-        backgroundPokeballImageView()
-        headerLabelView()
-        searchTextFieldView()
-        itemButtonViewSetup()
+        let itemButton = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 52))
+        itemButton.setTitle("Moves", for: .normal)
+        itemButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        movesButtonView.addSubview(itemButton)
 
-        NSLayoutConstraint.activate([
-            headerLabel.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 75),
-            headerLabel.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            headerLabel.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+        backgroundPokeballImageView(uiView: itemButton, frame: CGRect(x: (UIScreen.main.bounds.width / 4) + 35, y: 5, width: 52, height: 52), tintColor: .white)
 
-            searchTextField.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 20),
-            searchTextField.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            searchTextField.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-            searchTextField.heightAnchor.constraint(equalToConstant: 52),
+        view.addSubview(movesButtonView)
+    }
 
-            itemButtonView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 20),
-            itemButtonView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            itemButtonView.heightAnchor.constraint(equalToConstant: 52),
-            itemButtonView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width / 2) - 20),
-        ])
+    private func abilitiesButtonViewSetup() {
+        abilitiesButtonView = UIView()
+        abilitiesButtonView.translatesAutoresizingMaskIntoConstraints = false
+        abilitiesButtonView.backgroundColor = .systemBlue
+        abilitiesButtonView.layer.cornerRadius = 10
+
+        let itemButton = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 52))
+        itemButton.setTitle("Abilities", for: .normal)
+        itemButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        abilitiesButtonView.addSubview(itemButton)
+
+        backgroundPokeballImageView(uiView: itemButton, frame: CGRect(x: (UIScreen.main.bounds.width / 4) + 35, y: 5, width: 52, height: 52), tintColor: .white)
+
+        view.addSubview(abilitiesButtonView)
+    }
+
+    private func itemsButtonViewSetup() {
+        itemsButtonView = UIView()
+        itemsButtonView.translatesAutoresizingMaskIntoConstraints = false
+        itemsButtonView.backgroundColor = .systemYellow
+        itemsButtonView.layer.cornerRadius = 10
+
+        let itemButton = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 52))
+        itemButton.setTitle("Items", for: .normal)
+        itemButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        itemsButtonView.addSubview(itemButton)
+
+        backgroundPokeballImageView(uiView: itemButton, frame: CGRect(x: (UIScreen.main.bounds.width / 4) + 35, y: 5, width: 52, height: 52), tintColor: .white)
+
+        view.addSubview(itemsButtonView)
     }
 }
