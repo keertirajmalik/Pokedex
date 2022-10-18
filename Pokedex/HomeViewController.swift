@@ -30,7 +30,6 @@ class HomeViewController: UIViewController {
         pokedexButtonViewSetup()
         movesButtonViewSetup()
         abilitiesButtonViewSetup()
-        movesButtonViewSetup()
         itemsButtonViewSetup()
 
         NSLayoutConstraint.activate([
