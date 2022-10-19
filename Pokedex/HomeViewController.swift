@@ -8,12 +8,14 @@
 import UIKit
 
 class HomeViewController: UIViewController {
+    private var backgroundCardView: UIView!
     private var headerLabel: UILabel!
     private var searchTextField: UITextField!
     private var pokedexButtonView: UIView!
     private var movesButtonView: UIView!
     private var abilitiesButtonView: UIView!
     private var itemsButtonView: UIView!
+    private var newsTableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +23,7 @@ class HomeViewController: UIViewController {
 
     override func loadView() {
         view = UIView()
-        view.backgroundColor = .systemGray5
+        view.backgroundColor = Constants.backgroundColor
 
         backgroundCardViewSetup()
         backgroundPokeballImageView(uiView: view, frame: CGRect(x: UIScreen.main.bounds.width - 150, y: -75, width: 250, height: 250), tintColor: .gray)
@@ -31,6 +33,7 @@ class HomeViewController: UIViewController {
         movesButtonViewSetup()
         abilitiesButtonViewSetup()
         itemsButtonViewSetup()
+        newsTableViewSetup()
 
         NSLayoutConstraint.activate([
             headerLabel.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 75),
@@ -61,11 +64,16 @@ class HomeViewController: UIViewController {
             itemsButtonView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
             itemsButtonView.heightAnchor.constraint(equalToConstant: 52),
             itemsButtonView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width / 2) - 20),
+
+            newsTableView.topAnchor.constraint(equalTo: itemsButtonView.bottomAnchor, constant: 50),
+            newsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            newsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            newsTableView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
         ])
     }
 
     private func backgroundCardViewSetup() {
-        let backgroundCardView = UIView()
+        backgroundCardView = UIView()
         backgroundCardView.translatesAutoresizingMaskIntoConstraints = false
         backgroundCardView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: (UIScreen.main.bounds.height / 2) + 25)
         backgroundCardView.backgroundColor = .white
@@ -175,5 +183,34 @@ class HomeViewController: UIViewController {
         backgroundPokeballImageView(uiView: itemButton, frame: CGRect(x: (UIScreen.main.bounds.width / 4) + 35, y: 5, width: 52, height: 52), tintColor: .white)
 
         view.addSubview(itemsButtonView)
+    }
+
+    private func newsTableViewSetup() {
+        newsTableView = UITableView()
+        newsTableView.translatesAutoresizingMaskIntoConstraints = false
+        newsTableView.register(NewsTableViewCell.self, forCellReuseIdentifier: NewsTableViewCell.identifier)
+        newsTableView.dataSource = self
+        newsTableView.delegate = self
+        newsTableView.backgroundColor = Constants.backgroundColor
+        newsTableView.showsVerticalScrollIndicator = false
+        view.addSubview(newsTableView)
+    }
+}
+
+extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
+        10
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsTableViewCell.identifier, for: indexPath) as? NewsTableViewCell else {
+            return UITableViewCell()
+        }
+        cell.configure(text: "News Test", imageName: "thumbnail")
+        return cell
+    }
+
+    func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
+        75
     }
 }
