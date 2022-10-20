@@ -16,6 +16,8 @@ class HomeViewController: UIViewController {
     private var abilitiesButtonView: UIView!
     private var itemsButtonView: UIView!
     private var newsTableView: UITableView!
+    private var newsViewAllLabel: UILabel!
+    private var newsHeaderLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +35,8 @@ class HomeViewController: UIViewController {
         movesButtonViewSetup()
         abilitiesButtonViewSetup()
         itemsButtonViewSetup()
+        newsHeaderLabelView()
+        newsViewAllLabelView()
         newsTableViewSetup()
 
         NSLayoutConstraint.activate([
@@ -65,7 +69,13 @@ class HomeViewController: UIViewController {
             itemsButtonView.heightAnchor.constraint(equalToConstant: 52),
             itemsButtonView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width / 2) - 20),
 
-            newsTableView.topAnchor.constraint(equalTo: itemsButtonView.bottomAnchor, constant: 50),
+            newsHeaderLabel.topAnchor.constraint(equalTo: abilitiesButtonView.bottomAnchor, constant: 50),
+            newsHeaderLabel.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            
+            newsViewAllLabel.topAnchor.constraint(equalTo: abilitiesButtonView.bottomAnchor, constant: 50),
+            newsViewAllLabel.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+
+            newsTableView.topAnchor.constraint(equalTo: newsHeaderLabel.bottomAnchor, constant: 20),
             newsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             newsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             newsTableView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
@@ -185,6 +195,22 @@ class HomeViewController: UIViewController {
         view.addSubview(itemsButtonView)
     }
 
+    private func newsHeaderLabelView() {
+        newsHeaderLabel = UILabel()
+        newsHeaderLabel.translatesAutoresizingMaskIntoConstraints = false
+        newsHeaderLabel.font = .systemFont(ofSize: 22, weight: .bold)
+        newsHeaderLabel.text = "Pokemon News"
+        view.addSubview(newsHeaderLabel)
+    }
+
+    private func newsViewAllLabelView() {
+        newsViewAllLabel = UILabel()
+        newsViewAllLabel.translatesAutoresizingMaskIntoConstraints = false
+        newsViewAllLabel.textColor = .systemBlue
+        newsViewAllLabel.text = "View All"
+        view.addSubview(newsViewAllLabel)
+    }
+    
     private func newsTableViewSetup() {
         newsTableView = UITableView()
         newsTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -206,7 +232,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsTableViewCell.identifier, for: indexPath) as? NewsTableViewCell else {
             return UITableViewCell()
         }
-        cell.configure(text: "News Test", imageName: "thumbnail")
+        cell.configure(text: "Pokemon Rumble Rush Arrives Soon", imageName: "thumbnail")
         return cell
     }
 

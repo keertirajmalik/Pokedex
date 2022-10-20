@@ -12,13 +12,15 @@ class NewsTableViewCell: UITableViewCell {
 
     private let newsLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.numberOfLines = 0
         return label
     }()
 
     private let newsDateLabel: UILabel = {
         let label = UILabel()
-        label.text = "test"
+        label.text = "20 Oct 2022"
+        label.font = UIFont.systemFont(ofSize: 12)
         return label
     }()
 
