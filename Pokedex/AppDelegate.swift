@@ -13,4 +13,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         true
     }
+
+    override init() {
+        super.init()
+        UIFont.overrideInitialize()
+    }
 }

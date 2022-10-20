@@ -71,7 +71,7 @@ class HomeViewController: UIViewController {
 
             newsHeaderLabel.topAnchor.constraint(equalTo: abilitiesButtonView.bottomAnchor, constant: 50),
             newsHeaderLabel.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            
+
             newsViewAllLabel.topAnchor.constraint(equalTo: abilitiesButtonView.bottomAnchor, constant: 50),
             newsViewAllLabel.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
 
@@ -210,7 +210,7 @@ class HomeViewController: UIViewController {
         newsViewAllLabel.text = "View All"
         view.addSubview(newsViewAllLabel)
     }
-    
+
     private func newsTableViewSetup() {
         newsTableView = UITableView()
         newsTableView.translatesAutoresizingMaskIntoConstraints = false
