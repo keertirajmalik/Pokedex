@@ -12,15 +12,15 @@ class NewsTableViewCell: UITableViewCell {
 
     private let newsLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 15, weight: .medium)
         label.numberOfLines = 0
         return label
     }()
 
-    private let newsDateLabel: UILabel = {
+    private let newsPublishDateLabel: UILabel = {
         let label = UILabel()
-        label.text = "20 Oct 2022"
         label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = .systemGray
         return label
     }()
 
@@ -34,7 +34,7 @@ class NewsTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.backgroundColor = Constants.backgroundColor
         contentView.addSubview(newsLabel)
-        contentView.addSubview(newsDateLabel)
+        contentView.addSubview(newsPublishDateLabel)
         contentView.addSubview(newsImageView)
     }
 
@@ -43,8 +43,9 @@ class NewsTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public func configure(text: String, imageName: String) {
-        newsLabel.text = text
+    public func configure(newsTitle: String, imageName: String, publishDate: String) {
+        newsLabel.text = newsTitle
+        newsPublishDateLabel.text = publishDate
         newsImageView.image = UIImage(named: imageName)
     }
 
@@ -59,8 +60,8 @@ class NewsTableViewCell: UITableViewCell {
 
         let cellHeight = contentView.frame.size.height
         let cellWidth = contentView.frame.size.width
-        newsLabel.frame = CGRect(x: 20, y: 0, width: cellWidth * (3 / 4) - 20, height: cellHeight * (3 / 4))
-        newsDateLabel.frame = CGRect(x: 20, y: cellHeight - (cellHeight / 4) - 10, width: cellWidth * (3 / 4) - 20, height: cellHeight / 4)
+        newsLabel.frame = CGRect(x: 20, y: 0, width: cellWidth * (3 / 4) - 40, height: cellHeight * (3 / 4))
+        newsPublishDateLabel.frame = CGRect(x: 20, y: cellHeight - (cellHeight / 4) - 10, width: cellWidth * (3 / 4) - 20, height: cellHeight / 4)
         newsImageView.frame = CGRect(x: cellWidth - cellHeight - 20, y: 10, width: cellHeight, height: cellHeight - 20)
     }
 }

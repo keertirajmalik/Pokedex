@@ -232,11 +232,11 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsTableViewCell.identifier, for: indexPath) as? NewsTableViewCell else {
             return UITableViewCell()
         }
-        cell.configure(text: "Pokemon Rumble Rush Arrives Soon", imageName: "thumbnail")
+        cell.configure(newsTitle: "Pokemon Sword and Shield Players Can Get Three Free Mythical Pokemon Soon - CNET", imageName: "thumbnail", publishDate: "20 Oct 2022")
         return cell
     }
 
     func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
-        75
+        100
     }
 }

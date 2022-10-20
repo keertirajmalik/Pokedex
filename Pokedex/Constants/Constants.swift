@@ -7,6 +7,6 @@
 
 import UIKit
 
-struct Constants {
+enum Constants {
     static let backgroundColor: UIColor = .systemGray5
 }

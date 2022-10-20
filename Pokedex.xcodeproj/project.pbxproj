@@ -18,7 +18,7 @@
 		334390652901A457000CB1F6 /* CircularStd-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 334390612901A457000CB1F6 /* CircularStd-Bold.ttf */; };
 		334390672901A490000CB1F6 /* CircularStd-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 334390662901A490000CB1F6 /* CircularStd-Black.ttf */; };
 		3343906A2901A668000CB1F6 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334390692901A668000CB1F6 /* Helper.swift */; };
-		3343906C2901ADA8000CB1F6 /* AppFontName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3343906B2901ADA8000CB1F6 /* AppFontName.swift */; };
+		3343906C2901ADA8000CB1F6 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3343906B2901ADA8000CB1F6 /* Fonts.swift */; };
 		33BC7F1C29006C7F0098E966 /* NewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33BC7F1B29006C7F0098E966 /* NewsTableViewCell.swift */; };
 		33BC7F1F2900757C0098E966 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33BC7F1E2900757C0098E966 /* Constants.swift */; };
 /* End PBXBuildFile section */
@@ -37,7 +37,7 @@
 		334390612901A457000CB1F6 /* CircularStd-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CircularStd-Bold.ttf"; sourceTree = "<group>"; };
 		334390662901A490000CB1F6 /* CircularStd-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CircularStd-Black.ttf"; sourceTree = "<group>"; };
 		334390692901A668000CB1F6 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
-		3343906B2901ADA8000CB1F6 /* AppFontName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFontName.swift; sourceTree = "<group>"; };
+		3343906B2901ADA8000CB1F6 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		33BC7F1B29006C7F0098E966 /* NewsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewCell.swift; sourceTree = "<group>"; };
 		33BC7F1E2900757C0098E966 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -126,7 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				33BC7F1E2900757C0098E966 /* Constants.swift */,
-				3343906B2901ADA8000CB1F6 /* AppFontName.swift */,
+				3343906B2901ADA8000CB1F6 /* Fonts.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -210,7 +210,7 @@
 				33BC7F1F2900757C0098E966 /* Constants.swift in Sources */,
 				332AB80E28F5973900E0FD32 /* AppDelegate.swift in Sources */,
 				33BC7F1C29006C7F0098E966 /* NewsTableViewCell.swift in Sources */,
-				3343906C2901ADA8000CB1F6 /* AppFontName.swift in Sources */,
+				3343906C2901ADA8000CB1F6 /* Fonts.swift in Sources */,
 				332AB81028F5973900E0FD32 /* SceneDelegate.swift in Sources */,
 				33124F7A28FC3CF20091672E /* UITextField + Extension.swift in Sources */,
 			);
