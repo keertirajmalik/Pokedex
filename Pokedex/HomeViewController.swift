@@ -33,7 +33,7 @@ class HomeViewController: UIViewController {
         view.backgroundColor = Constants.backgroundColor
 
         backgroundCardViewSetup()
-        backgroundPokeballImageView(uiView: view, frame: CGRect(x: UIScreen.main.bounds.width - 150, y: -75, width: 250, height: 250), tintColor: .gray)
+        backgroundPokeballImageView(uiView: backgroundCardView, frame: CGRect(x: UIScreen.main.bounds.width - 150, y: -75, width: 250, height: 250), tintColor: .gray)
         headerLabelView()
         searchTextFieldView()
         pokedexButtonViewSetup()
@@ -254,22 +254,28 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 // MARK: - UIScrollViewDelegate
 
 extension HomeViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    func scrollViewDidScroll(_: UIScrollView) {
         let delta = newsTableView.contentOffset.y - lastContentOffset
 
-        if delta < 0,
-           backgroundViewTopConstraint?.constant ?? 0 < 0,
-           scrollView.contentOffset.y < 0
+        guard let backgroundViewTopConstraint = backgroundViewTopConstraint else {
+            return
+        }
+
+        // we compress the top view
+        if delta > 0,
+           backgroundViewTopConstraint.constant > -topConstraintRange.upperBound,
+           newsTableView.contentOffset.y > 0
         {
-            backgroundViewTopConstraint?.constant = max(topConstraintRange.lowerBound, backgroundViewTopConstraint!.constant - delta)
+            backgroundViewTopConstraint.constant = max(-topConstraintRange.upperBound, backgroundViewTopConstraint.constant - delta)
             newsTableView.contentOffset.y -= delta
         }
 
-        if delta > 0,
-           backgroundViewTopConstraint?.constant ?? 0 > -((UIScreen.main.bounds.height / 2) + 25),
-           newsTableView.contentOffset.y > 0
+        // we expand the top view
+        if delta <= 0,
+           backgroundViewTopConstraint.constant < topConstraintRange.lowerBound,
+           newsTableView.contentOffset.y < 0
         {
-            backgroundViewTopConstraint?.constant = min(backgroundViewTopConstraint!.constant - delta, topConstraintRange.upperBound)
+            backgroundViewTopConstraint.constant = min(topConstraintRange.lowerBound, backgroundViewTopConstraint.constant - delta)
             newsTableView.contentOffset.y -= delta
         }
 
