@@ -19,6 +19,11 @@ class HomeViewController: UIViewController {
     private var newsViewAllLabel: UILabel!
     private var newsHeaderLabel: UILabel!
 
+    private var lastContentOffset: CGFloat = 0.0
+    private var backgroundViewTopConstraint: NSLayoutConstraint?
+    private var oldContentOffset = CGPointZero
+    private let topConstraintRange = (CGFloat(0) ..< CGFloat((UIScreen.main.bounds.height / 2) + 25))
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -40,39 +45,43 @@ class HomeViewController: UIViewController {
         newsTableViewSetup()
 
         NSLayoutConstraint.activate([
-            headerLabel.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 75),
-            headerLabel.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            headerLabel.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            backgroundCardView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backgroundCardView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backgroundCardView.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height / 2) + 25),
+
+            headerLabel.topAnchor.constraint(equalTo: backgroundCardView.layoutMarginsGuide.topAnchor, constant: 75),
+            headerLabel.leadingAnchor.constraint(equalTo: backgroundCardView.layoutMarginsGuide.leadingAnchor),
+            headerLabel.trailingAnchor.constraint(equalTo: backgroundCardView.layoutMarginsGuide.trailingAnchor),
 
             searchTextField.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 20),
-            searchTextField.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            searchTextField.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            searchTextField.leadingAnchor.constraint(equalTo: backgroundCardView.layoutMarginsGuide.leadingAnchor),
+            searchTextField.trailingAnchor.constraint(equalTo: backgroundCardView.layoutMarginsGuide.trailingAnchor),
             searchTextField.heightAnchor.constraint(equalToConstant: 52),
 
             pokedexButtonView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 20),
-            pokedexButtonView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            pokedexButtonView.leadingAnchor.constraint(equalTo: backgroundCardView.layoutMarginsGuide.leadingAnchor),
             pokedexButtonView.heightAnchor.constraint(equalToConstant: 52),
             pokedexButtonView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width / 2) - 20),
 
             movesButtonView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 20),
-            movesButtonView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            movesButtonView.trailingAnchor.constraint(equalTo: backgroundCardView.layoutMarginsGuide.trailingAnchor),
             movesButtonView.heightAnchor.constraint(equalToConstant: 52),
             movesButtonView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width / 2) - 20),
 
             abilitiesButtonView.topAnchor.constraint(equalTo: pokedexButtonView.bottomAnchor, constant: 20),
-            abilitiesButtonView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            abilitiesButtonView.leadingAnchor.constraint(equalTo: backgroundCardView.layoutMarginsGuide.leadingAnchor),
             abilitiesButtonView.heightAnchor.constraint(equalToConstant: 52),
             abilitiesButtonView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width / 2) - 20),
 
             itemsButtonView.topAnchor.constraint(equalTo: movesButtonView.bottomAnchor, constant: 20),
-            itemsButtonView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            itemsButtonView.trailingAnchor.constraint(equalTo: backgroundCardView.layoutMarginsGuide.trailingAnchor),
             itemsButtonView.heightAnchor.constraint(equalToConstant: 52),
             itemsButtonView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width / 2) - 20),
 
-            newsHeaderLabel.topAnchor.constraint(equalTo: abilitiesButtonView.bottomAnchor, constant: 50),
+            newsHeaderLabel.topAnchor.constraint(equalTo: backgroundCardView.bottomAnchor, constant: 50),
             newsHeaderLabel.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
 
-            newsViewAllLabel.topAnchor.constraint(equalTo: abilitiesButtonView.bottomAnchor, constant: 50),
+            newsViewAllLabel.topAnchor.constraint(equalTo: backgroundCardView.bottomAnchor, constant: 50),
             newsViewAllLabel.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
 
             newsTableView.topAnchor.constraint(equalTo: newsHeaderLabel.bottomAnchor, constant: 20),
@@ -85,11 +94,12 @@ class HomeViewController: UIViewController {
     private func backgroundCardViewSetup() {
         backgroundCardView = UIView()
         backgroundCardView.translatesAutoresizingMaskIntoConstraints = false
-        backgroundCardView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: (UIScreen.main.bounds.height / 2) + 25)
         backgroundCardView.backgroundColor = .white
         backgroundCardView.layer.cornerRadius = 25
         backgroundCardView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        view.insertSubview(backgroundCardView, at: 0)
+        view.addSubview(backgroundCardView)
+        backgroundViewTopConstraint = backgroundCardView.topAnchor.constraint(equalTo: view.topAnchor)
+        backgroundViewTopConstraint?.isActive = true
     }
 
     private func backgroundPokeballImageView(uiView: UIView, frame: CGRect, tintColor: UIColor) {
@@ -107,7 +117,7 @@ class HomeViewController: UIViewController {
         headerLabel.font = .systemFont(ofSize: 32, weight: .bold)
         headerLabel.text = "What Pokemon \n are you looking for?"
         headerLabel.numberOfLines = 0
-        view.addSubview(headerLabel)
+        backgroundCardView.addSubview(headerLabel)
     }
 
     private func searchTextFieldView() {
@@ -128,7 +138,7 @@ class HomeViewController: UIViewController {
         searchTextField.leftView = viewLeft
         searchTextField.leftViewMode = .always
 
-        view.addSubview(searchTextField)
+        backgroundCardView.addSubview(searchTextField)
     }
 
     private func pokedexButtonViewSetup() {
@@ -144,7 +154,7 @@ class HomeViewController: UIViewController {
 
         backgroundPokeballImageView(uiView: itemButton, frame: CGRect(x: (UIScreen.main.bounds.width / 4) + 35, y: 5, width: 52, height: 52), tintColor: .white)
 
-        view.addSubview(pokedexButtonView)
+        backgroundCardView.addSubview(pokedexButtonView)
     }
 
     private func movesButtonViewSetup() {
@@ -160,7 +170,7 @@ class HomeViewController: UIViewController {
 
         backgroundPokeballImageView(uiView: itemButton, frame: CGRect(x: (UIScreen.main.bounds.width / 4) + 35, y: 5, width: 52, height: 52), tintColor: .white)
 
-        view.addSubview(movesButtonView)
+        backgroundCardView.addSubview(movesButtonView)
     }
 
     private func abilitiesButtonViewSetup() {
@@ -176,7 +186,7 @@ class HomeViewController: UIViewController {
 
         backgroundPokeballImageView(uiView: itemButton, frame: CGRect(x: (UIScreen.main.bounds.width / 4) + 35, y: 5, width: 52, height: 52), tintColor: .white)
 
-        view.addSubview(abilitiesButtonView)
+        backgroundCardView.addSubview(abilitiesButtonView)
     }
 
     private func itemsButtonViewSetup() {
@@ -192,7 +202,7 @@ class HomeViewController: UIViewController {
 
         backgroundPokeballImageView(uiView: itemButton, frame: CGRect(x: (UIScreen.main.bounds.width / 4) + 35, y: 5, width: 52, height: 52), tintColor: .white)
 
-        view.addSubview(itemsButtonView)
+        backgroundCardView.addSubview(itemsButtonView)
     }
 
     private func newsHeaderLabelView() {
@@ -238,5 +248,31 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
         100
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+
+extension HomeViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let delta = newsTableView.contentOffset.y - lastContentOffset
+
+        if delta < 0,
+           backgroundViewTopConstraint?.constant ?? 0 < 0,
+           scrollView.contentOffset.y < 0
+        {
+            backgroundViewTopConstraint?.constant = max(topConstraintRange.lowerBound, backgroundViewTopConstraint!.constant - delta)
+            newsTableView.contentOffset.y -= delta
+        }
+
+        if delta > 0,
+           backgroundViewTopConstraint?.constant ?? 0 > -((UIScreen.main.bounds.height / 2) + 25),
+           newsTableView.contentOffset.y > 0
+        {
+            backgroundViewTopConstraint?.constant = min(backgroundViewTopConstraint!.constant - delta, topConstraintRange.upperBound)
+            newsTableView.contentOffset.y -= delta
+        }
+
+        lastContentOffset = newsTableView.contentOffset.y
     }
 }
