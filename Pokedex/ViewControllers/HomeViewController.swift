@@ -21,7 +21,7 @@ class HomeViewController: UIViewController {
 
     private var lastContentOffset: CGFloat = 0.0
     private var backgroundViewTopConstraint: NSLayoutConstraint?
-    private var oldContentOffset = CGPointZero
+    private var oldContentOffset = CGPoint.zero
     private let topConstraintRange = (CGFloat(0) ..< CGFloat((UIScreen.main.bounds.height / 2) + 25))
 
     override func viewDidLoad() {
@@ -78,10 +78,10 @@ class HomeViewController: UIViewController {
             itemsButtonView.heightAnchor.constraint(equalToConstant: 52),
             itemsButtonView.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width / 2) - 20),
 
-            newsHeaderLabel.topAnchor.constraint(equalTo: backgroundCardView.bottomAnchor, constant: 50),
+            newsHeaderLabel.topAnchor.constraint(equalTo: backgroundCardView.bottomAnchor, constant: 20),
             newsHeaderLabel.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
 
-            newsViewAllLabel.topAnchor.constraint(equalTo: backgroundCardView.bottomAnchor, constant: 50),
+            newsViewAllLabel.topAnchor.constraint(equalTo: backgroundCardView.bottomAnchor, constant: 20),
             newsViewAllLabel.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
 
             newsTableView.topAnchor.constraint(equalTo: newsHeaderLabel.bottomAnchor, constant: 20),
@@ -104,8 +104,7 @@ class HomeViewController: UIViewController {
 
     private func backgroundPokeballImageView(uiView: UIView, frame: CGRect, tintColor: UIColor) {
         let backgroundPokeballImage = UIImageView(frame: frame)
-        backgroundPokeballImage.image = UIImage(named: "pokeball.png")?.withTintColor(tintColor)
-
+        backgroundPokeballImage.image = UIImage(named: "pokeball")?.withTintColor(tintColor)
         backgroundPokeballImage.alpha = 0.15
         backgroundPokeballImage.contentMode = .scaleAspectFit
         uiView.insertSubview(backgroundPokeballImage, at: 1)
@@ -152,7 +151,9 @@ class HomeViewController: UIViewController {
         itemButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         pokedexButtonView.addSubview(itemButton)
 
-        backgroundPokeballImageView(uiView: itemButton, frame: CGRect(x: (UIScreen.main.bounds.width / 4) + 35, y: 5, width: 52, height: 52), tintColor: .white)
+        backgroundPokeballImageView(uiView: itemButton,
+                                    frame: CGRect(x: (UIScreen.main.bounds.width / 4) + 35, y: 5, width: 52, height: 52),
+                                    tintColor: .white)
 
         backgroundCardView.addSubview(pokedexButtonView)
     }
@@ -168,7 +169,9 @@ class HomeViewController: UIViewController {
         itemButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         movesButtonView.addSubview(itemButton)
 
-        backgroundPokeballImageView(uiView: itemButton, frame: CGRect(x: (UIScreen.main.bounds.width / 4) + 35, y: 5, width: 52, height: 52), tintColor: .white)
+        backgroundPokeballImageView(uiView: itemButton,
+                                    frame: CGRect(x: (UIScreen.main.bounds.width / 4) + 35, y: 5, width: 52, height: 52),
+                                    tintColor: .white)
 
         backgroundCardView.addSubview(movesButtonView)
     }
@@ -184,7 +187,9 @@ class HomeViewController: UIViewController {
         itemButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         abilitiesButtonView.addSubview(itemButton)
 
-        backgroundPokeballImageView(uiView: itemButton, frame: CGRect(x: (UIScreen.main.bounds.width / 4) + 35, y: 5, width: 52, height: 52), tintColor: .white)
+        backgroundPokeballImageView(uiView: itemButton,
+                                    frame: CGRect(x: (UIScreen.main.bounds.width / 4) + 35, y: 5, width: 52, height: 52),
+                                    tintColor: .white)
 
         backgroundCardView.addSubview(abilitiesButtonView)
     }
@@ -200,7 +205,9 @@ class HomeViewController: UIViewController {
         itemButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         itemsButtonView.addSubview(itemButton)
 
-        backgroundPokeballImageView(uiView: itemButton, frame: CGRect(x: (UIScreen.main.bounds.width / 4) + 35, y: 5, width: 52, height: 52), tintColor: .white)
+        backgroundPokeballImageView(uiView: itemButton,
+                                    frame: CGRect(x: (UIScreen.main.bounds.width / 4) + 35, y: 5, width: 52, height: 52),
+                                    tintColor: .white)
 
         backgroundCardView.addSubview(itemsButtonView)
     }
@@ -208,7 +215,7 @@ class HomeViewController: UIViewController {
     private func newsHeaderLabelView() {
         newsHeaderLabel = UILabel()
         newsHeaderLabel.translatesAutoresizingMaskIntoConstraints = false
-        newsHeaderLabel.font = .systemFont(ofSize: 22, weight: .bold)
+        newsHeaderLabel.font = .systemFont(ofSize: 24, weight: .bold)
         newsHeaderLabel.text = "Pokemon News"
         view.addSubview(newsHeaderLabel)
     }
@@ -239,10 +246,14 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsTableViewCell.identifier, for: indexPath) as? NewsTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsTableViewCell.identifier, for: indexPath)
+            as? NewsTableViewCell
+        else {
             return UITableViewCell()
         }
-        cell.configure(newsTitle: "Pokemon Sword and Shield Players Can Get Three Free Mythical Pokemon Soon - CNET", imageName: "thumbnail", publishDate: "20 Oct 2022")
+        cell.configure(newsTitle: "Pokemon Sword and Shield Players Can Get Three Free Mythical Pokemon Soon - CNET",
+                       imageName: "thumbnail",
+                       publishDate: "20 Oct 2022")
         return cell
     }
 
