@@ -58,7 +58,7 @@ extension PokedexViewController: UICollectionViewDataSource, UICollectionViewDel
         else {
             return UICollectionViewCell()
         }
-        cell.configure(backgroundColor: .init(red: 67 / 255, green: 209 / 255, blue: 179 / 255, alpha: 1.0), pokemonImage: "pokemon", pokemonNumber: "#0001", pokemonName: "Bulbasur", pokemonTypes: "Poison")
+        cell.configure(backgroundColor: .init(red: 67 / 255, green: 209 / 255, blue: 179 / 255, alpha: 1.0), pokemonImage: "pokemon", pokemonNumber: "#0001", pokemonName: "Bulbasur", pokemonTypes: ["Poison", "Flying"])
         return cell
     }
 }
