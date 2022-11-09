@@ -14,8 +14,7 @@ class PokemonDetailsViewController: UIViewController {
     private var pokemonTypeStack: UIStackView!
     private var pokemonNumberLabel: UILabel!
     private var pokemonDetailsSegmentedControl: UISegmentedControl!
-    private var aboutDetailView: UIView!
-    private var baseStatsDetailView: UIView!
+    private var aboutDetail: UIView!
     private var baseStatsStackView: UIStackView!
 
     override func viewDidLoad() {
@@ -33,9 +32,7 @@ class PokemonDetailsViewController: UIViewController {
         pokemonTypesLabelSetup(pokemonTypes: ["Grass", "Poison"])
         pokemonNumberLabelSetup()
         segmentedControlSetup()
-//        baseStatsDetailViewSetup()
-        aboutDetailViewSetup()
-
+        aboutDetailViewSetup(pokemonDetails: ["Species": "Seed", "Height": "2'3.6\"(0.70 cm)", "Weight": "15.2 lbs (6.9 kg)", "Abilities": "Overgrow, Chlorophyl"])
         NSLayoutConstraint.activate([
             detailsCardView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             detailsCardView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -156,150 +153,105 @@ class PokemonDetailsViewController: UIViewController {
         pokemonDetailsSegmentedControl.underlinePosition()
 
         if sender.selectedSegmentIndex == 0 {
-            baseStatsDetailView.removeFromSuperview()
-            aboutDetailViewSetup()
+            baseStatsStackView.removeFromSuperview()
+            aboutDetailViewSetup(pokemonDetails: ["Species": "Seed", "Height": "2'3.6\"(0.70 cm)", "Weight": "15.2 lbs (6.9 kg)", "Abilities": "Overgrow, Chlorophyl"])
         } else if sender.selectedSegmentIndex == 1 {
-            aboutDetailView.removeFromSuperview()
-//            baseStatsDetailViewSetup()
-            baseStatsLabelSetup(pokemonStats: ["HP": 45, "Attack": 60])
+            aboutDetail.removeFromSuperview()
+            let stats = ["HP": 45, "Attack": 60, "Defence": 48, "Sp.Atk": 65, "Sp.Def": 65, "Speed": 45, "Total": 317]
+            baseStatsLabelSetup(pokemonStats: stats)
         }
     }
 
-    private func aboutDetailViewSetup() {
-        aboutDetailView = UIView()
-        aboutDetailView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(aboutDetailView)
+    private func aboutDetailViewSetup(pokemonDetails details: [String: String]) {
+        aboutDetail = UIView()
+        aboutDetail.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(aboutDetail)
 
-        let speciesLabel = UILabel()
-        speciesLabel.text = "Species"
-        speciesLabel.textColor = UIColor.gray
-        speciesLabel.translatesAutoresizingMaskIntoConstraints = false
-        aboutDetailView.addSubview(speciesLabel)
+        let aboutDetailStackView = UIStackView()
+        aboutDetailStackView.spacing = 5
+        aboutDetailStackView.axis = .vertical
+        aboutDetailStackView.translatesAutoresizingMaskIntoConstraints = false
+        aboutDetail.addSubview(aboutDetailStackView)
 
-        let heightLabel = UILabel()
-        heightLabel.text = "Height"
-        heightLabel.textColor = UIColor.gray
-        heightLabel.translatesAutoresizingMaskIntoConstraints = false
-        aboutDetailView.addSubview(heightLabel)
+        for (index, detail) in details.enumerated() {
+            let detailView = UIView()
+            aboutDetailStackView.addArrangedSubview(detailView)
 
-        let weightLabel = UILabel()
-        weightLabel.text = "Weight"
-        weightLabel.textColor = UIColor.gray
-        weightLabel.translatesAutoresizingMaskIntoConstraints = false
-        aboutDetailView.addSubview(weightLabel)
+            let speciesLabel = UILabel()
+            speciesLabel.text = detail.key
+            speciesLabel.textColor = UIColor.gray
+            speciesLabel.translatesAutoresizingMaskIntoConstraints = false
+            detailView.addSubview(speciesLabel)
 
-        let abilitiesLabel = UILabel()
-        abilitiesLabel.text = "Abilities"
-        abilitiesLabel.textColor = UIColor.gray
-        abilitiesLabel.translatesAutoresizingMaskIntoConstraints = false
-        aboutDetailView.addSubview(abilitiesLabel)
+            let abilitiesValueLabel = UILabel()
+            abilitiesValueLabel.text = detail.value
+            abilitiesValueLabel.translatesAutoresizingMaskIntoConstraints = false
+            detailView.addSubview(abilitiesValueLabel)
 
-        let speciesValueLabel = UILabel()
-        speciesValueLabel.text = "Seed"
-        speciesValueLabel.translatesAutoresizingMaskIntoConstraints = false
-        aboutDetailView.addSubview(speciesValueLabel)
+            NSLayoutConstraint.activate([
+                speciesLabel.topAnchor.constraint(equalTo: aboutDetailStackView.topAnchor, constant: index == 0 ? 25 : CGFloat((35 * index) + 25)),
+                speciesLabel.leadingAnchor.constraint(equalTo: aboutDetailStackView.leadingAnchor, constant: 25),
+                speciesLabel.widthAnchor.constraint(equalToConstant: 100),
 
-        let heightValueLabel = UILabel()
-        heightValueLabel.text = "2'3.6\"(0.70 cm)"
-        heightValueLabel.translatesAutoresizingMaskIntoConstraints = false
-        aboutDetailView.addSubview(heightValueLabel)
-
-        let weightValueLabel = UILabel()
-        weightValueLabel.text = "15.2 lbs (6.9 kg)"
-        weightValueLabel.translatesAutoresizingMaskIntoConstraints = false
-        aboutDetailView.addSubview(weightValueLabel)
-
-        let abilitiesValueLabel = UILabel()
-        abilitiesValueLabel.text = "Overgrow, Chlorophyl"
-        abilitiesValueLabel.translatesAutoresizingMaskIntoConstraints = false
-        aboutDetailView.addSubview(abilitiesValueLabel)
+                abilitiesValueLabel.topAnchor.constraint(equalTo: speciesLabel.topAnchor),
+                abilitiesValueLabel.leadingAnchor.constraint(equalTo: speciesLabel.trailingAnchor),
+            ])
+        }
 
         let BreedingHeaderLabel = UILabel()
         BreedingHeaderLabel.text = "Breeding"
         BreedingHeaderLabel.translatesAutoresizingMaskIntoConstraints = false
         BreedingHeaderLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        aboutDetailView.addSubview(BreedingHeaderLabel)
+        aboutDetail.addSubview(BreedingHeaderLabel)
 
         let genderLabel = UILabel()
         genderLabel.text = "Gender"
         genderLabel.textColor = UIColor.gray
         genderLabel.translatesAutoresizingMaskIntoConstraints = false
-        aboutDetailView.addSubview(genderLabel)
+        aboutDetail.addSubview(genderLabel)
 
         let eggGroupsLabel = UILabel()
         eggGroupsLabel.text = "Egg Groups"
         eggGroupsLabel.textColor = UIColor.gray
         eggGroupsLabel.translatesAutoresizingMaskIntoConstraints = false
-        aboutDetailView.addSubview(eggGroupsLabel)
+        aboutDetail.addSubview(eggGroupsLabel)
 
         let genderValueLabel = UILabel()
         addImageInUILabel(label: genderValueLabel)
         genderValueLabel.translatesAutoresizingMaskIntoConstraints = false
         genderValueLabel.clipsToBounds = true
-        aboutDetailView.addSubview(genderValueLabel)
+        aboutDetail.addSubview(genderValueLabel)
 
         let eggGroupsValueLabel = UILabel()
         eggGroupsValueLabel.text = "Monster"
         eggGroupsValueLabel.translatesAutoresizingMaskIntoConstraints = false
-        aboutDetailView.addSubview(eggGroupsValueLabel)
+        aboutDetail.addSubview(eggGroupsValueLabel)
 
         NSLayoutConstraint.activate([
-            aboutDetailView.topAnchor.constraint(equalTo: pokemonDetailsSegmentedControl.bottomAnchor),
-            aboutDetailView.leadingAnchor.constraint(equalTo: detailsCardView.leadingAnchor),
-            aboutDetailView.trailingAnchor.constraint(equalTo: detailsCardView.trailingAnchor),
-            aboutDetailView.bottomAnchor.constraint(equalTo: detailsCardView.bottomAnchor),
+            aboutDetailStackView.topAnchor.constraint(equalTo: pokemonDetailsSegmentedControl.bottomAnchor),
+            aboutDetailStackView.leadingAnchor.constraint(equalTo: detailsCardView.leadingAnchor),
+            aboutDetailStackView.trailingAnchor.constraint(equalTo: detailsCardView.trailingAnchor),
+            aboutDetailStackView.heightAnchor.constraint(equalToConstant: CGFloat((35 * details.count) + 25)),
 
-            speciesLabel.topAnchor.constraint(equalTo: aboutDetailView.topAnchor, constant: 25),
-            speciesLabel.leadingAnchor.constraint(equalTo: aboutDetailView.leadingAnchor, constant: 25),
-            speciesLabel.widthAnchor.constraint(equalToConstant: 100),
-
-            heightLabel.topAnchor.constraint(equalTo: speciesLabel.bottomAnchor, constant: 10),
-            heightLabel.leadingAnchor.constraint(equalTo: aboutDetailView.leadingAnchor, constant: 25),
-            heightLabel.widthAnchor.constraint(equalToConstant: 100),
-
-            weightLabel.topAnchor.constraint(equalTo: heightLabel.bottomAnchor, constant: 10),
-            weightLabel.leadingAnchor.constraint(equalTo: aboutDetailView.leadingAnchor, constant: 25),
-            weightLabel.widthAnchor.constraint(equalToConstant: 100),
-
-            abilitiesLabel.topAnchor.constraint(equalTo: weightLabel.bottomAnchor, constant: 10),
-            abilitiesLabel.leadingAnchor.constraint(equalTo: aboutDetailView.leadingAnchor, constant: 25),
-            abilitiesLabel.widthAnchor.constraint(equalToConstant: 100),
-
-            speciesValueLabel.topAnchor.constraint(equalTo: aboutDetailView.topAnchor, constant: 25),
-            speciesValueLabel.leadingAnchor.constraint(equalTo: speciesLabel.trailingAnchor),
-            speciesValueLabel.trailingAnchor.constraint(equalTo: aboutDetailView.trailingAnchor),
-
-            heightValueLabel.topAnchor.constraint(equalTo: speciesLabel.bottomAnchor, constant: 10),
-            heightValueLabel.leadingAnchor.constraint(equalTo: heightLabel.trailingAnchor),
-            heightValueLabel.trailingAnchor.constraint(equalTo: aboutDetailView.trailingAnchor),
-
-            weightValueLabel.topAnchor.constraint(equalTo: heightLabel.bottomAnchor, constant: 10),
-            weightValueLabel.leadingAnchor.constraint(equalTo: weightLabel.trailingAnchor),
-            weightValueLabel.trailingAnchor.constraint(equalTo: aboutDetailView.trailingAnchor),
-
-            abilitiesValueLabel.topAnchor.constraint(equalTo: weightLabel.bottomAnchor, constant: 10),
-            abilitiesValueLabel.leadingAnchor.constraint(equalTo: abilitiesLabel.trailingAnchor),
-            abilitiesValueLabel.trailingAnchor.constraint(equalTo: aboutDetailView.trailingAnchor),
-
-            BreedingHeaderLabel.topAnchor.constraint(equalTo: abilitiesLabel.bottomAnchor, constant: 25),
-            BreedingHeaderLabel.leadingAnchor.constraint(equalTo: aboutDetailView.leadingAnchor, constant: 25),
+            BreedingHeaderLabel.topAnchor.constraint(equalTo: aboutDetailStackView.bottomAnchor, constant: 25),
+            BreedingHeaderLabel.leadingAnchor.constraint(equalTo: detailsCardView.leadingAnchor, constant: 25),
             BreedingHeaderLabel.widthAnchor.constraint(equalToConstant: 100),
 
             genderLabel.topAnchor.constraint(equalTo: BreedingHeaderLabel.bottomAnchor, constant: 10),
-            genderLabel.leadingAnchor.constraint(equalTo: aboutDetailView.leadingAnchor, constant: 25),
+            genderLabel.leadingAnchor.constraint(equalTo: detailsCardView.leadingAnchor, constant: 25),
             genderLabel.widthAnchor.constraint(equalToConstant: 100),
 
             eggGroupsLabel.topAnchor.constraint(equalTo: genderLabel.bottomAnchor, constant: 10),
-            eggGroupsLabel.leadingAnchor.constraint(equalTo: aboutDetailView.leadingAnchor, constant: 25),
+            eggGroupsLabel.leadingAnchor.constraint(equalTo: detailsCardView.leadingAnchor, constant: 25),
             eggGroupsLabel.widthAnchor.constraint(equalToConstant: 100),
 
             genderValueLabel.topAnchor.constraint(equalTo: BreedingHeaderLabel.bottomAnchor, constant: 10),
             genderValueLabel.leadingAnchor.constraint(equalTo: genderLabel.trailingAnchor),
-            genderValueLabel.trailingAnchor.constraint(equalTo: aboutDetailView.trailingAnchor),
+            genderValueLabel.trailingAnchor.constraint(equalTo: detailsCardView.trailingAnchor),
 
             eggGroupsValueLabel.topAnchor.constraint(equalTo: genderValueLabel.bottomAnchor, constant: 10),
             eggGroupsValueLabel.leadingAnchor.constraint(equalTo: eggGroupsLabel.trailingAnchor),
-            eggGroupsValueLabel.trailingAnchor.constraint(equalTo: aboutDetailView.trailingAnchor),
+            eggGroupsValueLabel.trailingAnchor.constraint(equalTo: detailsCardView.trailingAnchor),
         ])
     }
 
@@ -355,7 +307,7 @@ class PokemonDetailsViewController: UIViewController {
             statView.addSubview(statProgressBar)
 
             NSLayoutConstraint.activate([
-                statLabel.topAnchor.constraint(equalTo: baseStatsStackView.topAnchor, constant: CGFloat(25 * (index + 1))),
+                statLabel.topAnchor.constraint(equalTo: baseStatsStackView.topAnchor, constant: index == 0 ? 25 : CGFloat((35 * index) + 25)),
                 statLabel.leadingAnchor.constraint(equalTo: baseStatsStackView.leadingAnchor, constant: 25),
                 statLabel.widthAnchor.constraint(equalToConstant: 75),
 
