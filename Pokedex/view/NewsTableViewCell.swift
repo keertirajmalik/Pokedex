@@ -32,7 +32,7 @@ class NewsTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.backgroundColor = Constants.backgroundColor
+        contentView.backgroundColor = Color.backgroundColor
         contentView.addSubview(newsLabel)
         contentView.addSubview(newsPublishDateLabel)
         contentView.addSubview(newsImageView)

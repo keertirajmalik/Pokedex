@@ -30,7 +30,7 @@ class HomeViewController: UIViewController {
 
     override func loadView() {
         view = UIView()
-        view.backgroundColor = Constants.backgroundColor
+        view.backgroundColor = Color.backgroundColor
 
         backgroundCardViewSetup()
         backgroundPokeballImageView(uiView: backgroundCardView, frame: CGRect(x: UIScreen.main.bounds.width - 150, y: -75, width: 250, height: 250), tintColor: .gray)
@@ -234,7 +234,7 @@ class HomeViewController: UIViewController {
         newsTableView.register(NewsTableViewCell.self, forCellReuseIdentifier: NewsTableViewCell.identifier)
         newsTableView.dataSource = self
         newsTableView.delegate = self
-        newsTableView.backgroundColor = Constants.backgroundColor
+        newsTableView.backgroundColor = Color.backgroundColor
         newsTableView.showsVerticalScrollIndicator = false
         view.addSubview(newsTableView)
     }

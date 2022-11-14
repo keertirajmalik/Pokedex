@@ -16,7 +16,7 @@ class PokedexViewController: UIViewController {
 
     override func loadView() {
         view = UIView()
-        view.backgroundColor = Constants.backgroundColor
+        view.backgroundColor = Color.backgroundColor
 
         pokemonCollectionViewSetup()
 
@@ -41,7 +41,7 @@ class PokedexViewController: UIViewController {
         pokedexCollectionView.translatesAutoresizingMaskIntoConstraints = false
         pokedexCollectionView.dataSource = self
         pokedexCollectionView.delegate = self
-        pokedexCollectionView.backgroundColor = Constants.backgroundColor
+        pokedexCollectionView.backgroundColor = Color.backgroundColor
         pokedexCollectionView.showsVerticalScrollIndicator = false
         view.addSubview(pokedexCollectionView)
     }

@@ -16,6 +16,7 @@ class PokemonDetailsViewController: UIViewController {
     private var pokemonDetailsSegmentedControl: UISegmentedControl!
     private var aboutDetail: UIView!
     private var baseStatsStackView: UIStackView!
+    private var evolutionView: UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +24,7 @@ class PokemonDetailsViewController: UIViewController {
 
     override func loadView() {
         view = UIView()
-        view.backgroundColor = Constants.greenColor
+        view.backgroundColor = Color.greenColor
 
         detailsCardViewSetup()
         backgroundImageView()
@@ -32,7 +33,7 @@ class PokemonDetailsViewController: UIViewController {
         pokemonTypesLabelSetup(pokemonTypes: ["Grass", "Poison"])
         pokemonNumberLabelSetup()
         segmentedControlSetup()
-        aboutDetailViewSetup(pokemonDetails: ["Species": "Seed", "Height": "2'3.6\"(0.70 cm)", "Weight": "15.2 lbs (6.9 kg)", "Abilities": "Overgrow, Chlorophyl"])
+        aboutDetailViewSetup(pokemonDetails: ["Species": "Seed", "Height": "2'3.6\" (0.70 cm)", "Weight": "15.2 lbs (6.9 kg)", "Abilities": "Overgrow, Chlorophyl"])
         NSLayoutConstraint.activate([
             detailsCardView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             detailsCardView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -153,19 +154,29 @@ class PokemonDetailsViewController: UIViewController {
         pokemonDetailsSegmentedControl.underlinePosition()
 
         if sender.selectedSegmentIndex == 0 {
-            baseStatsStackView.removeFromSuperview()
-            aboutDetailViewSetup(pokemonDetails: ["Species": "Seed", "Height": "2'3.6\"(0.70 cm)", "Weight": "15.2 lbs (6.9 kg)", "Abilities": "Overgrow, Chlorophyl"])
+            aboutDetail?.removeFromSuperview()
+            baseStatsStackView?.removeFromSuperview()
+            evolutionView?.removeFromSuperview()
+            aboutDetailViewSetup(pokemonDetails: ["Species": "Seed", "Height": "2'3.6\" (0.70 cm)", "Weight": "15.2lbs (6.9 kg)", "Abilities": "Overgrow, Chlorophyl"])
         } else if sender.selectedSegmentIndex == 1 {
-            aboutDetail.removeFromSuperview()
-            let stats = ["HP": 45, "Attack": 60, "Defence": 48, "Sp.Atk": 65, "Sp.Def": 65, "Speed": 45, "Total": 317]
+            aboutDetail?.removeFromSuperview()
+            baseStatsStackView?.removeFromSuperview()
+            evolutionView?.removeFromSuperview()
+            let stats = Stats(HP: 45, Attack: 60, Defence: 48, Sp_Atk: 65, Sp_Def: 65, Speed: 45)
             baseStatsLabelSetup(pokemonStats: stats)
+        } else if sender.selectedSegmentIndex == 2 {
+            aboutDetail?.removeFromSuperview()
+            baseStatsStackView?.removeFromSuperview()
+            evolutionView?.removeFromSuperview()
+            let evolution = [Evolution(baseImage: "pokemon", evolutionLevel: "17", evolvedImage: "pokemon"), Evolution(baseImage: "pokemon", evolutionLevel: "25", evolvedImage: "pokemon")]
+            evolutionViewSetup(pokemonEvolution: evolution)
         }
     }
 
     private func aboutDetailViewSetup(pokemonDetails details: [String: String]) {
         aboutDetail = UIView()
         aboutDetail.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(aboutDetail)
+        detailsCardView.addSubview(aboutDetail)
 
         let aboutDetailStackView = UIStackView()
         aboutDetailStackView.spacing = 5
@@ -277,14 +288,17 @@ class PokemonDetailsViewController: UIViewController {
         label.attributedText = fullString
     }
 
-    private func baseStatsLabelSetup(pokemonStats stats: [String: Int]) {
+    private func baseStatsLabelSetup(pokemonStats stats: Stats) {
         baseStatsStackView = UIStackView()
         baseStatsStackView.spacing = 5
         baseStatsStackView.axis = .vertical
         baseStatsStackView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(baseStatsStackView)
+        detailsCardView.addSubview(baseStatsStackView)
 
-        for (index, stat) in stats.enumerated() {
+        var statList = stats.allProperties()
+        statList["Total"] = stats.Total
+
+        for (index, stat) in statList.sorted(by: <).enumerated() {
             let statView = UIView()
             baseStatsStackView.addArrangedSubview(statView)
 
@@ -301,9 +315,9 @@ class PokemonDetailsViewController: UIViewController {
 
             let statProgressBar = UIProgressView(progressViewStyle: .bar)
             statProgressBar.translatesAutoresizingMaskIntoConstraints = false
-            statProgressBar.progressTintColor = Constants.redColor
+            statProgressBar.progressTintColor = Color.redColor
             statProgressBar.backgroundColor = UIColor.systemGray5
-            statProgressBar.setProgress(Float(stat.value) / 100, animated: true)
+            statProgressBar.setProgress(stat.key == "Total" ? Float(stat.value) / 600 : Float(stat.value) / 100, animated: true)
             statView.addSubview(statProgressBar)
 
             NSLayoutConstraint.activate([
@@ -326,6 +340,81 @@ class PokemonDetailsViewController: UIViewController {
             baseStatsStackView.leadingAnchor.constraint(equalTo: detailsCardView.leadingAnchor),
             baseStatsStackView.trailingAnchor.constraint(equalTo: detailsCardView.trailingAnchor),
             baseStatsStackView.bottomAnchor.constraint(equalTo: detailsCardView.bottomAnchor),
+        ])
+    }
+
+    private func evolutionViewSetup(pokemonEvolution evolution: [Evolution]) {
+        evolutionView = UIView()
+        detailsCardView.addSubview(evolutionView)
+
+        let evolutionStackView = UIStackView()
+        evolutionStackView.spacing = 5
+        evolutionStackView.axis = .vertical
+        evolutionStackView.translatesAutoresizingMaskIntoConstraints = false
+        evolutionView.addSubview(evolutionStackView)
+
+        let breedingHeaderLabel = UILabel()
+        breedingHeaderLabel.text = "Evolution Chain"
+        breedingHeaderLabel.translatesAutoresizingMaskIntoConstraints = false
+        breedingHeaderLabel.font = UIFont.systemFont(ofSize: 22, weight: .regular)
+        evolutionView.addSubview(breedingHeaderLabel)
+
+        for (index, evol) in evolution.enumerated() {
+            let evolView = UIView()
+            evolutionStackView.addArrangedSubview(evolView)
+
+            let baseImage = UIImageView()
+            baseImage.image = UIImage(named: evol.baseImage)
+            baseImage.translatesAutoresizingMaskIntoConstraints = false
+            evolView.addSubview(baseImage)
+
+            let evolutionLevelLabel = UILabel()
+            evolutionLevelLabel.text = "(Level \(evol.evolutionLevel))"
+            evolutionLevelLabel.textAlignment = .center
+            evolutionLevelLabel.translatesAutoresizingMaskIntoConstraints = false
+            evolView.addSubview(evolutionLevelLabel)
+
+            let evolutionArrowImage = UIImageView()
+            evolutionArrowImage.image = UIImage(systemName: "arrow.right")?.withTintColor(.systemGray5, renderingMode: .alwaysOriginal)
+            evolutionArrowImage.contentMode = .scaleAspectFit
+            evolutionArrowImage.translatesAutoresizingMaskIntoConstraints = false
+            evolView.addSubview(evolutionArrowImage)
+
+            let evolvedImage = UIImageView()
+            evolvedImage.image = UIImage(named: evol.evolvedImage)
+            evolvedImage.translatesAutoresizingMaskIntoConstraints = false
+            evolView.addSubview(evolvedImage)
+
+            NSLayoutConstraint.activate([
+                baseImage.topAnchor.constraint(equalTo: evolutionStackView.topAnchor, constant: index == 0 ? 20 : CGFloat((Int(detailsCardView.frame.width) / 3 * index) + 20)),
+                baseImage.leadingAnchor.constraint(equalTo: evolutionStackView.leadingAnchor, constant: 20),
+                baseImage.widthAnchor.constraint(equalToConstant: (detailsCardView.frame.width / 3) - 20),
+                baseImage.heightAnchor.constraint(equalToConstant: (detailsCardView.frame.width / 3) - 20),
+
+                evolutionArrowImage.centerYAnchor.constraint(equalTo: baseImage.centerYAnchor, constant: -10),
+                evolutionArrowImage.centerXAnchor.constraint(equalTo: evolView.centerXAnchor),
+                evolutionArrowImage.widthAnchor.constraint(equalToConstant: 25),
+                evolutionArrowImage.heightAnchor.constraint(equalToConstant: 25),
+
+                evolutionLevelLabel.topAnchor.constraint(equalTo: evolutionArrowImage.bottomAnchor),
+                evolutionLevelLabel.leadingAnchor.constraint(equalTo: baseImage.trailingAnchor),
+                evolutionLevelLabel.widthAnchor.constraint(equalToConstant: (detailsCardView.frame.width / 3) - 40),
+
+                evolvedImage.topAnchor.constraint(equalTo: baseImage.topAnchor),
+                evolvedImage.leadingAnchor.constraint(equalTo: evolutionLevelLabel.trailingAnchor),
+                evolvedImage.widthAnchor.constraint(equalToConstant: (detailsCardView.frame.width / 3) - 20),
+                evolvedImage.bottomAnchor.constraint(equalTo: baseImage.bottomAnchor),
+            ])
+        }
+
+        NSLayoutConstraint.activate([
+            breedingHeaderLabel.topAnchor.constraint(equalTo: pokemonDetailsSegmentedControl.bottomAnchor, constant: 25),
+            breedingHeaderLabel.leadingAnchor.constraint(equalTo: detailsCardView.leadingAnchor, constant: 20),
+
+            evolutionStackView.topAnchor.constraint(equalTo: breedingHeaderLabel.bottomAnchor),
+            evolutionStackView.leadingAnchor.constraint(equalTo: detailsCardView.leadingAnchor, constant: 20),
+            evolutionStackView.trailingAnchor.constraint(equalTo: detailsCardView.trailingAnchor, constant: -20),
+            evolutionStackView.bottomAnchor.constraint(equalTo: detailsCardView.bottomAnchor),
         ])
     }
 }
